@@ -1,6 +1,6 @@
 # Inventory Management System using NextJS
 
-URL: [inventory-management-system](https://inventory-management-system-nextjs-kj1nesfw6.vercel.app)
+URL: [inventory-management-system](https://inventory-management-system-nextjs.vercel.app/)
 
 ## Getting Started
 
