@@ -7,9 +7,10 @@ import {
   Button,
   Modal,
   Stack,
-  TablePagination,
+  SearchBar,
   TextField,
   Typography,
+
 } from "@mui/material";
 import {
   collection,
@@ -28,13 +29,14 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 
 export default function Home() {
   const [inventory, setInventory] = useState([]);
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
   const [inp_quantity, setInpQuantity] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
+
 
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, "inventory"));
@@ -96,6 +98,10 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const filteredInventory = inventory.filter(item => {
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  });
+
   return (
     <Box
       width={"100vw"}
@@ -139,6 +145,14 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
+          <TextField
+          variant="outlined"
+          fullWidth="true"
+          placeholder="Search Items"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{mb: "1rem"}}
+          />
           <TableContainer>
             <Table aria-label="simple table">
               <TableHead bgcolor="gray">
@@ -268,82 +282,5 @@ export default function Home() {
         </Button>
       </Box>
     </Box>
-
-    // <Box
-    //   width={"100vw"}
-    //   height={"100vh"}
-    //   display={"flex"}
-    //   justifyContent={"center"}
-    //   alignItems={"center"}
-    //   bgcolor={"#09111f"}
-    //   flexDirection={"column"}
-    // >
-    //   <Typography
-    //     variant="h1"
-    //     fontFamily={"Calibri"}
-    //     fontSize={"4rem"}
-    //     textAlign={"center"}
-    //     color={"#ffffff"}
-    //     bgcolor={"#334769"}
-    //     padding={"1.5rem 2.2rem"}
-    //     borderRadius={"2rem"}
-    //   >
-    //     Inventory Management System
-    //   </Typography>
-    //   <Modal open={open} onClose={handleClose}>
-    //     <Box
-    //       position="absolute"
-    //       top="50%"
-    //       left="50%"
-    //       sx={{
-    //         transform: "translate(-50%, -50%)",
-    //       }}
-    //       width={400}
-    //       bgcolor={"white"}
-    //       border="2px solid #000"
-    //       boxShadow={24}
-    //       p={4}
-    //       display={"flex"}
-    //       flexDirection={"column"}
-    //       gap={3}
-    //     >
-    //       <Typography variant="h6">Add Item</Typography>
-    //       <Stack spacing={3} width={"100%"} direction={"row"}></Stack>
-    //       <TextField
-    //         variant="outlined"
-    //         fullWidth
-    //         value={itemName}
-    //         onChange={(e) => {
-    //           setItemName(e.target.value);
-    //         }}
-    //       />
-    //       <Button
-    //         variant="outlined"
-    //         sx={{
-    //           backgroundColor: "gray",
-    //           border: "1px solid gray",
-    //           borderRadius: "2rem",
-    //           color: "white",
-    //           ":hover": {
-    //             background: "black",
-    //             border: "1px solid black",
-    //           },
-    //         }}
-    //         onClick={() => {
-    //           addItem(itemName);
-    //           setItemName("");
-    //           handleClose();
-    //         }}
-    //       >
-    //         Add
-    //       </Button>
-    //     </Box>
-    //   </Modal>
-    //   <Button onClick={() => {
-    //     handleOpen();
-    //   }}>
-    //     Add Item
-    //   </Button>
-    // </Box>
   );
 }
