@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Inventory Management System using NextJS
+
+URL: [inventory-management-system](https://inventory-management-system-nextjs-kj1nesfw6.vercel.app)
 
 ## Getting Started
 
