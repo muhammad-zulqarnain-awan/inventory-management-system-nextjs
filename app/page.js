@@ -7,10 +7,8 @@ import {
   Button,
   Modal,
   Stack,
-  SearchBar,
   TextField,
   Typography,
-
 } from "@mui/material";
 import {
   collection,
@@ -35,8 +33,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
   const [inp_quantity, setInpQuantity] = useState();
-  const [searchQuery, setSearchQuery] = useState("");
-
+  const [search, setSearch] = useState("");
 
   const updateInventory = async () => {
     const snapshot = query(collection(firestore, "inventory"));
@@ -98,10 +95,6 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const filteredInventory = inventory.filter(item => {
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  });
-
   return (
     <Box
       width={"100vw"}
@@ -145,13 +138,15 @@ export default function Home() {
             backgroundColor: "white",
           }}
         >
-          <TextField
-          variant="outlined"
-          fullWidth="true"
-          placeholder="Search Items"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{mb: "1rem"}}
+          <TextField 
+          fullWidth
+          variant="standard"
+          sx={{
+            padding: "2rem"
+
+          }}
+          placeholder="Search Item"
+          onChange={(e) => setSearch(e.target.value)}
           />
           <TableContainer>
             <Table aria-label="simple table">
@@ -164,7 +159,9 @@ export default function Home() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {inventory.map((item) => (
+                {inventory.filter((item) => {
+                  return search.toLowerCase() === '' ? item : item.name.toLowerCase().includes(search)
+                }).map((item) => (
                   <TableRow
                     key={item.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -173,7 +170,7 @@ export default function Home() {
                       {item.name}
                     </TableCell>
                     <TableCell align="right">{item.quantity}</TableCell>
-                    
+
                     <TableCell align="right">
                       <Button
                         onClick={() => {
